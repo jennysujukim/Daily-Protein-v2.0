@@ -1,4 +1,7 @@
-import { useState } from "react"
+import { 
+    useState,
+    useEffect
+ } from "react"
 import { 
     TextField, 
     Typography, 
@@ -7,22 +10,27 @@ import {
 } from "@mui/material"
 import PageLayout from "../../layout/PageLayout/PageLayout"
 import FoodList from "../../components/FoodList/FoodList"
-import axios from "axios"
+import { useGetFoodData } from "../../hooks/useGetFoodData"
+import { FoodData } from "../../models"
 
 function Add() {
 
     const [ searchValue, setSearchValue ] = useState<string>("")
-    const [ foodList, setFoodList ] = useState<string[]>([])
-    const [ isSubmitted, setIsSubmitted ] = useState<boolean>(false)
+    const [ foodList, setFoodList ] = useState<FoodData[]>([])
+
+    const url = `${process.env.REACT_APP_API_URL}&ingr=${searchValue}`
+
+    const { data, isPending, error } = useGetFoodData(url)
+
+    useEffect(() => {
+        setFoodList(data) 
+    }, [data])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-
-        const url = `${process.env.REACT_APP_API_URL}&ingr=${searchValue}`
-
-        
-
+        console.log(foodList)
     }
+
 
   return (
     <PageLayout>
@@ -44,6 +52,7 @@ function Add() {
                 type="text"
                 className="w-full"
                 sx={{ paddingBottom: '0' }}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
             />
             <Tooltip title="Search food list">
                 <Button 
@@ -55,9 +64,15 @@ function Add() {
                 </Button>                
             </Tooltip>
         </form>
-        <div className="md:grid md:grid-cols-2 md:gap-5">
-            <FoodList />
-        </div>
+        { isPending && <Typography className="text-center">Loading...</Typography> }
+        { error && <Typography className="text-center">{error}</Typography> }
+        { data &&
+            <div className="md:grid md:grid-cols-2 md:gap-5">
+                <FoodList lists={foodList} />
+            </div>
+        }
+        
+
     </PageLayout>
   )
 }
