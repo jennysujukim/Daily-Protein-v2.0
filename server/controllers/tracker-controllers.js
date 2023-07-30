@@ -1,57 +1,78 @@
 const HttpError = require('../models/http-errors');
+const Tracker = require('../models/tracker');
 
-const DUMMY_DATA = [
-    {
-        uid: "bHSrkdyidxRpEdNyMqPcSpaYHVi2",
-        name: 'Chicken',
-        protein: 20
-    },
-    {
-        uid: "bHSrkdyidxRpEdNyMqPcSpaYHVi2",
-        name: 'Beef',
-        protein: 30
-    }
-]
-
-function createTracker (req, res, next) {
+// -- CREATE TRACKER -- //
+async function createTracker (req, res, next) {
     const { uid, name, protein } = req.body;
 
-    const createdTracker = {
+    const createdTracker = new Tracker({
         uid,
         name,
         protein
-    }
-
-    DUMMY_DATA.push(createdTracker);
-
-    if(!createdTracker) {
-        return next(
-            new HttpError('Could not create tracker', 404)
-        )
-    }
-
-    res.status(201).json(createdTracker);
-
-    console.log(DUMMY_DATA)
-
-}
-
-function getTrackerByUid (req, res, next) {
-    const uid = req.params.uid;
-
-    const tracker = DUMMY_DATA.filter(doc => {
-        return doc.uid === uid;
     })
 
-    if(!tracker) {
-        return next(
-            new HttpError('Could not find tracker for the provided uid', 404)
-        )
+    try {
+        await createdTracker.save();
+        console.log(createdTracker)
+    } catch(err) {
+        const error = new HttpError('Creating tracker failed, please try again', 500);
+        return next(error);
     }
 
-    res.status(201).json(tracker);
+    if(!createdTracker) {
+        const error = new HttpError('Could not create tracker', 404);
+        return next(error);
+    }
+
+    res.status(201).json({ tracker: createdTracker });
+}
+
+
+// -- GET TRACKER BY UID -- //
+async function getTrackerByUid (req, res, next) {
+    const uid = req.params.uid;
+
+    let trackerData;
+
+    try {
+        trackerData = await Tracker.find({ uid: uid });
+        console.log(trackerData)
+    } catch(err) {
+        const error = new HttpError('Fetching tracker failed, please try again', 500);
+        return next(error);
+    }
+
+    if(!trackerData || trackerData.length === 0) {
+        const error = new HttpError('Could not find tracker for the provided user id', 404);
+        return next(error);
+    }
+
+    res.status(201).json({ tracker: trackerData.map(data => data.toObject({ getters: true }))});
 
 }
+
+// -- DELETE TRACKER BY ID -- //
+
+async function deleteTrackerById (req, res, next) {
+    const trackerId = req.params.id;
+
+    let deletedTracker;
+    try {
+        deletedTracker = await Tracker.findByIdAndDelete(trackerId);
+    }catch(err) {
+        const error = new HttpError('Something went wrong, could not delete tracker', 500);
+        return next(error);
+    }
+
+    if(!deletedTracker) {
+        const error = new HttpError('Could not find tracker for this id', 404);
+        return next(error);
+    }
+
+    res.status(201).json({ message: 'Item deleted successfully' })
+}
+
 
 exports.createTracker = createTracker;
 exports.getTrackerByUid = getTrackerByUid;
+exports.deleteTrackerById = deleteTrackerById;

@@ -1,8 +1,21 @@
 import { Card, CardContent, Tooltip, Typography } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close';
 import { TrackerListProps } from "../../models";
+import axios from "axios";
 
-function TrackList({ lists }: TrackerListProps) {
+function TrackList({ lists, handleDelete }: TrackerListProps) {
+
+    const handleClick = (dataId: string ) => {
+        axios.delete(`http://localhost:${process.env.REACT_APP_PORT}/api/tracker/${dataId}`)
+        .then((response) => {
+            console.log(response.data.message)
+            handleDelete(dataId)
+        })
+        .catch((error) => {
+            console.error("Error making delete request:", error)
+        })
+    }
+
   return (
     <>
         {lists.map((list, index) => (
@@ -18,6 +31,7 @@ function TrackList({ lists }: TrackerListProps) {
                         <CloseIcon 
                             className="absolute right-4 top-4 cursor-pointer" 
                             color="secondary"
+                            onClick={() => handleClick(list.id)}
                         />
                     </Tooltip>
                 </CardContent>

@@ -1,6 +1,7 @@
 const HttpError = require('../models/http-errors');
 const Profile = require('../models/profile');
 
+// -- CREATE PROFILE -- //
 async function createProfile (req, res, next) {
     const { uid, age, gender, height, weight, activity, goal } = req.body;
 
@@ -30,6 +31,7 @@ async function createProfile (req, res, next) {
 }
 
 
+// -- GET PROFILE BY UID -- //
 async function getProfileByUid (req, res, next){
     const uid = req.params.uid;
 
@@ -48,7 +50,7 @@ async function getProfileByUid (req, res, next){
         return next(error);
     }
 
-    res.json({ profile: profile.toObject( {getters: true} )});
+    res.status(201).json({ profile: profile.toObject( {getters: true} )});
 }
 
 

@@ -13,7 +13,7 @@ import axios from 'axios'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { TrackerData } from '../../models'
 
-
+ 
 function Tracker() {
 
   const { user } = useAuthContext()
@@ -29,7 +29,7 @@ function Tracker() {
 
       try {
         const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT}/api/tracker/${user?.uid}`)
-        const data = await response.data
+        const data = await response.data.tracker
 
         console.log(data)
         setIsPending(false)
@@ -46,6 +46,10 @@ function Tracker() {
   
   }, [user])
 
+  const handleDelete = (deletedDataId: string) => {
+    const updatedData = data.filter((item) => item.id !== deletedDataId);
+    setData(updatedData)
+  }
   
   return (
     <div className="col-span-7">
@@ -66,7 +70,7 @@ function Tracker() {
         { error && <Typography className="text-center">{error}</Typography> }
         { data &&
           <div className="mt-8">
-            <TrackList lists={data} />
+            <TrackList lists={data} handleDelete={handleDelete} />
           </div>
         }
 

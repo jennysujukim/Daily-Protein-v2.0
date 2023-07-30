@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post('/', trackerControllers.createTracker);
 router.get('/:uid', trackerControllers.getTrackerByUid);
+router.delete('/:id', trackerControllers.deleteTrackerById);
 
 module.exports = router;
