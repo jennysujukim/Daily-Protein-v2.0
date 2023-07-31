@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 // enable CORS
 app.use(cors({
-    origin: [`http://localhost:${PORT}`, "http://localhost:3000", "https://daily-protein.seojeongkim.com" ]
+    origin: [`http://localhost:${PORT}`, "http://localhost:3000", "https://daily-protein-app.onrender.com", "https://daily-protein.seojeongkim.com" ]
 }));
 
 // routes

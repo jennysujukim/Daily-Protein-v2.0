@@ -15,7 +15,7 @@ function TrackList({ lists, handleDelete }: TrackerListProps) {
 
     // Delete foodlist from database (server) when button clicked
     const handleClick = (dataId: string ) => {
-        axios.delete(`http://localhost:${process.env.REACT_APP_PORT}/api/tracker/${dataId}`)
+        axios.delete(`${process.env.REACT_APP_SERVER_PORT}/api/tracker/${dataId}`)
         .then(() => {
             handleDelete(dataId)
         })

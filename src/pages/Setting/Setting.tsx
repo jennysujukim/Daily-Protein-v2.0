@@ -42,7 +42,7 @@ function Setting() {
         e.preventDefault()
 
         // create profile to Profile database (server) when user submit the form
-        axios.post(`http://localhost:${process.env.REACT_APP_PORT}/api/profile`, { 
+        axios.post(`${process.env.REACT_APP_SERVER_PORT}/api/profile`, { 
             uid: user?.uid,
             age: profileState.age,
             gender: profileState.gender,

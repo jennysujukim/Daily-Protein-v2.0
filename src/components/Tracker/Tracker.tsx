@@ -32,7 +32,7 @@ function Tracker() {
       setIsPending(true)
 
       try {
-        const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT}/api/tracker/${user?.uid}`)
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_PORT}/api/tracker/${user?.uid}`)
         const data = await response.data.tracker
 
         setIsPending(false)

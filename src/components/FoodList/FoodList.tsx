@@ -26,7 +26,7 @@ function FoodList({ lists }: FoodListProps ) {
     // Create tracker's food list to database (server) when user clicks add button
     const handleClick = ( { foodName, foodProtein } : AddFoodProps ) => {
 
-        axios.post(`http://localhost:${process.env.REACT_APP_PORT}/api/tracker`, {
+        axios.post(`${process.env.REACT_APP_SERVER_PORT}/api/tracker`, {
             uid: user?.uid,
             name: foodName,
             protein: foodProtein
