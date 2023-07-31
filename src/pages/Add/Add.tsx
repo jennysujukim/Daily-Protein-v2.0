@@ -1,34 +1,31 @@
-import { 
-    useState,
-    useEffect
- } from "react"
+import { useState } from "react"
 import { 
     TextField, 
     Typography, 
     Button, 
-    Tooltip 
+    Tooltip,
+    Alert
 } from "@mui/material"
+import { useGetFoodData } from "../../hooks/useGetFoodData"
+import { FoodDataModel } from "../../models"
 import PageLayout from "../../layout/PageLayout/PageLayout"
 import FoodList from "../../components/FoodList/FoodList"
-import { useGetFoodData } from "../../hooks/useGetFoodData"
-import { FoodData } from "../../models"
+
 
 function Add() {
 
     const [ searchValue, setSearchValue ] = useState<string>("")
-    const [ foodList, setFoodList ] = useState<FoodData[]>([])
+    const [ foodList, setFoodList ] = useState<FoodDataModel[]>([])
 
+    // Edamam API url
     const url = `${process.env.REACT_APP_API_URL}&ingr=${searchValue}`
 
-    const { data, isPending, error } = useGetFoodData(url)
-
-    useEffect(() => {
-        setFoodList(data) 
-    }, [data])
+    // use custom hook to fetch data from Edamam API
+    const { data, error } = useGetFoodData(url)
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(foodList)
+        setFoodList(data) 
     }
 
 
@@ -64,15 +61,24 @@ function Add() {
                 </Button>                
             </Tooltip>
         </form>
-        { isPending && <Typography className="text-center">Loading...</Typography> }
-        { error && <Typography className="text-center">{error}</Typography> }
-        { data &&
+        { error && 
+            <Alert 
+                severity="error"
+                className="mt-4 mx-auto max-w-3xl"
+            >
+                Error when fetching data: {error}
+            </Alert>  
+        }
+        { data.length !==0 &&
             <div className="md:grid md:grid-cols-2 md:gap-5">
                 <FoodList lists={foodList} />
             </div>
         }
-        
-
+        { data.length === 0 &&
+            <Typography className="text-center">
+                No data available. Please search again.
+            </Typography>
+        }
     </PageLayout>
   )
 }

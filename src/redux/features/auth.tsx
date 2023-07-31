@@ -3,26 +3,28 @@ import {
   PayloadAction
 } from "@reduxjs/toolkit";
 import { 
-    AuthInitialState,
-    User  
+  AuthInitialStateModel,
+  UserModel  
 } from "../../models";
 
-const initialState: AuthInitialState = {
+// set initial state
+const initialState: AuthInitialStateModel = {
   user: null,
   authIsReady: false,
 };
 
+// create slice
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<User>) => {
+    login: (state, action: PayloadAction<UserModel>) => {
       state.user = action.payload;
     },
     logout: (state) => {
       state.user = null;
     },
-    authIsReady: (state, action: PayloadAction<User>) => {
+    authIsReady: (state, action: PayloadAction<UserModel>) => {
       state.user = action.payload;
       state.authIsReady = true;
     },

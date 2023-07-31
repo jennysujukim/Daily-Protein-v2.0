@@ -3,17 +3,14 @@ import {
     useEffect 
 } from 'react'
 import axios from 'axios'
-import { 
-    FoodResponseData, 
-    FoodData 
-} from '../models'
+import { FoodDataModel } from '../models'
 
-export const useGetFoodData = (url: string): FoodResponseData => {
+// Custome hook to fetch data from Edamam API
+export const useGetFoodData = (url: string) => {
 
-    const [ data, setData ] = useState<FoodData[]>([])
+    const [ data, setData ] = useState<FoodDataModel[]>([])
     const [ isPending, setIsPending ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
-
 
     useEffect(() => {
         const getData = async () => {

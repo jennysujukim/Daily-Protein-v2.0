@@ -4,7 +4,6 @@ const Profile = require('../models/profile');
 
 // -- CREATE PROFILE -- //
 async function createProfile (req, res, next) {
-    
     // deconstruct req.body
     const { uid, age, gender, height, weight, activity, goal } = req.body;
 
@@ -40,7 +39,7 @@ async function createProfile (req, res, next) {
 
 
 
-// -- GET PROFILE BY UID -- //
+// -- READ PROFILE BY UID -- //
 async function getProfileByUid (req, res, next){
     // deconstruct req.params
     const uid = req.params.uid;

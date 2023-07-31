@@ -4,11 +4,18 @@ import {
     useEffect
 } from "react"
 import { 
-    ProteinIntakeProps,
+    ProteinIntakeModel,
     ProteinIntakeContextProviderProps
 } from "../models"
 
-export const ProteinIntakeContext = createContext<ProteinIntakeProps>({ setProteinSum: () => {}, setProteinGoal: () => {}, proteinGoal: 0, proteinSum: 0 ,remainingProtein: 0, barPercent: 0}) 
+export const ProteinIntakeContext = createContext<ProteinIntakeModel>({ 
+    proteinSum: 0,
+    proteinGoal: 0, 
+    remainingProtein: 0, 
+    barPercent: 0,
+    setProteinSum: () => {}, 
+    setProteinGoal: () => {}
+}) 
 
 export const ProteinIntakeContextProvider = ({children}: ProteinIntakeContextProviderProps) => {
 
@@ -18,13 +25,32 @@ export const ProteinIntakeContextProvider = ({children}: ProteinIntakeContextPro
     const [ barPercent, setBarPercent ] = useState<number>(0)
 
     useEffect(() => {
-        setRemainingProtein(proteinGoal - proteinSum)
-        setBarPercent((proteinSum / proteinGoal) * 100)
+        // logic to update remaining protein and bar percent
+        const updatedRemainingProtein = (proteinGoal - proteinSum)
+        const updatedBarPercent = (proteinSum / proteinGoal) * 100
+
+        // make sure remaining protein and bar percent are not negative
+        if(updatedRemainingProtein < 0) {
+            setRemainingProtein(0)
+            setBarPercent(100)
+        } else {
+            setRemainingProtein(updatedRemainingProtein);
+            setBarPercent(updatedBarPercent);
+        }
         
     }, [proteinSum, proteinGoal])
 
     return (
-        <ProteinIntakeContext.Provider value={{ setProteinSum, setProteinGoal, proteinSum, proteinGoal, remainingProtein, barPercent }}>
+        <ProteinIntakeContext.Provider 
+            value={{ 
+                proteinSum, 
+                proteinGoal, 
+                remainingProtein, 
+                barPercent,
+                setProteinSum, 
+                setProteinGoal
+            }}
+        >
             {children}
         </ProteinIntakeContext.Provider>
     )

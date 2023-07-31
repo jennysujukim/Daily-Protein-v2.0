@@ -64,9 +64,5 @@ export const Calculator = (age: number, gender: string, height: number, weight: 
     const proteinCal = calorieIntake * proteinPercentage
     const proteinAmount = proteinCal / 4
 
-
-
     return Math.round(proteinAmount)
-
-
 }

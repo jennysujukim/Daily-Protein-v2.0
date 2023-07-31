@@ -2,11 +2,10 @@ import {
     createSlice,
     PayloadAction
 } from "@reduxjs/toolkit";
-import {
-    ProfileInitialState,
-} from "../../models"
+import { ProfileInitialStateModel } from "../../models"
 
-const initialState: ProfileInitialState = {
+// set initial state
+const initialState: ProfileInitialStateModel = {
     age: "",
     gender: "",
     height: "",
@@ -15,6 +14,7 @@ const initialState: ProfileInitialState = {
     goal: ""
 };
 
+// create slice
 const profileSlice = createSlice({
     name: "profile",
     initialState: initialState,

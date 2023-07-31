@@ -1,8 +1,8 @@
 import { ProteinIntakeContext } from "../context/ProteinIntakeContext";
 import { useContext } from "react";
-import { ProteinIntakeProps } from "../models";
+import { ProteinIntakeModel } from "../models";
 
-export const useProteinIntakeContext = (): ProteinIntakeProps => {
+export const useProteinIntakeContext = (): ProteinIntakeModel => {
     const context = useContext(ProteinIntakeContext);
 
     if(!context){

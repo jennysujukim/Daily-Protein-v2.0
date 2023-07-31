@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux"
 import { login } from "../redux/features/auth"
 import { 
     AuthProps, 
-    User 
+    UserModel 
 } from "../models"
  
 
@@ -15,16 +15,14 @@ export const useSignin = () => {
     const dispatch = useDispatch();
 
     const signIn = async ({email, password} : AuthProps) => {
-
         setError(null)
 
         try {
+            // sign in with email and password using firebase auth
             const response = await signInWithEmailAndPassword(auth, email, password)
-
-            dispatch(login(response.user as User))
-        }
-        
-        catch(error) {
+            // dispatch login action to redux store
+            dispatch(login(response.user as UserModel))
+        } catch(error) {
             setError(`Error when signing in : ${error}`)
         }
     }

@@ -1,4 +1,7 @@
-import { Link } from 'react-router-dom'
+import { 
+    Link,
+    useNavigate
+} from 'react-router-dom'
 import { 
     Button, 
     InputAdornment,
@@ -20,20 +23,25 @@ import {
     updateGoal
 } from '../../redux/features/profile'
 import { RootState } from '../../models'
-import PageLayout from '../../layout/PageLayout/PageLayout'
 import { useAuthContext } from '../../hooks/useAuthContext';
 import axios from 'axios';
+import PageLayout from '../../layout/PageLayout/PageLayout'
 
 
 function Setting() {
  
     const { user } = useAuthContext()
+
+    // use profile state from redux toolkit
+    // dispatch update action to redux store (when user change the input value)
     const profileState = useSelector((state:RootState) => state.profile)
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
+        // create profile to Profile database (server) when user submit the form
         axios.post(`http://localhost:${process.env.REACT_APP_PORT}/api/profile`, { 
             uid: user?.uid,
             age: profileState.age,
@@ -43,12 +51,11 @@ function Setting() {
             activity: profileState.activity,
             goal: profileState.goal
          })
-        .then((response) => {
-            console.log(response.data)
-        })
         .catch((error) => {
             console.error("Error making profile request:", error)
         })
+
+        navigate('/')
     }
 
   return (

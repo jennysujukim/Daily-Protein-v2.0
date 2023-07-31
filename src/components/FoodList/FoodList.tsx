@@ -1,3 +1,4 @@
+import axios from "axios";
 import { 
     Card, 
     CardContent,  
@@ -8,25 +9,27 @@ import {
     Button, 
     Tooltip 
 } from "@mui/material"
-import AddIcon from '@mui/icons-material/Add';
-import { FoodListProps, AddFoodProps } from "../../models";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import axios from "axios";
+import { 
+    FoodListProps, 
+    AddFoodProps 
+} from "../../models";
+import AddIcon from '@mui/icons-material/Add';
 
+
+// receieve lists FoodData from Add.tsx and map through each list
 function FoodList({ lists }: FoodListProps ) {
 
+    // in order to store user's uid in traker's database tgt when handleClick
     const { user } = useAuthContext()
 
+    // Create tracker's food list to database (server) when user clicks add button
     const handleClick = ( { foodName, foodProtein } : AddFoodProps ) => {
-        console.log(foodName, foodProtein)
 
         axios.post(`http://localhost:${process.env.REACT_APP_PORT}/api/tracker`, {
             uid: user?.uid,
             name: foodName,
             protein: foodProtein
-        })
-        .then((response) => {
-            console.log(response.data)
         })
         .catch((error) => {
             console.error("Error making tracker request:", error)
@@ -49,7 +52,10 @@ function FoodList({ lists }: FoodListProps ) {
                             <Button 
                                 variant="outlined"
                                 endIcon={<AddIcon />}
-                                onClick={() => handleClick({foodName: list.food.label, foodProtein: list.food.nutrients.PROCNT})}
+                                onClick={() => handleClick({
+                                    foodName: list.food.label, 
+                                    foodProtein: list.food.nutrients.PROCNT
+                                })}
                             >
                                 Add
                             </Button>
@@ -58,27 +64,32 @@ function FoodList({ lists }: FoodListProps ) {
                     <List className="md:grid md:grid-cols-2 pt-4 pb-0">
                         <ListItem>
                             <ListItemText className="uppercase">Calories:</ListItemText>
-                            <ListItemText className="text-right">{list.food.nutrients.ENERC_KCAL} kcal</ListItemText>
+                            <ListItemText className="text-right">
+                                {list.food.nutrients?.ENERC_KCAL?.toFixed(0)} kcal
+                            </ListItemText>
                         </ListItem>
                         <ListItem>
                             <ListItemText className="uppercase">Protein:</ListItemText>
-                            <ListItemText className="text-right">{list.food.nutrients.PROCNT} g</ListItemText>
+                            <ListItemText className="text-right">
+                                {list.food.nutrients?.PROCNT?.toFixed(0)} g
+                            </ListItemText>
                         </ListItem>
                         <ListItem>
                             <ListItemText className="uppercase">Carbs:</ListItemText>
-                            <ListItemText className="text-right">{list.food.nutrients.CHOCDF} g</ListItemText>
+                            <ListItemText className="text-right">
+                                {list.food.nutrients?.CHOCDF?.toFixed(0)} g
+                            </ListItemText>
                         </ListItem>
                         <ListItem>
                             <ListItemText className="uppercase">Fat:</ListItemText>
-                            <ListItemText className="text-right">{list.food.nutrients.FAT} g</ListItemText>
+                            <ListItemText className="text-right">
+                                {list.food.nutrients?.FAT?.toFixed(0)} g
+                            </ListItemText>
                         </ListItem>
                     </List>
                 </CardContent>
             </Card>
-        ))
-
-        }
-
+        ))}
     </>
   )
 }

@@ -1,9 +1,11 @@
-import { Typography, Paper, Divider, Tooltip } from "@mui/material"
+import { 
+    Typography, 
+    Paper, 
+    Divider
+} from "@mui/material"
 import { DashboardContainerProps } from "../../models"
-import SettingsIcon from '@mui/icons-material/Settings';
-import { Link } from "react-router-dom";
 
-function DashboardContainer( { isProfile, title, children }: DashboardContainerProps ) {
+function DashboardContainer( { title, children }: DashboardContainerProps ) {
 
   return (
     <Paper 
@@ -17,21 +19,6 @@ function DashboardContainer( { isProfile, title, children }: DashboardContainerP
             >
                 { title }
             </Typography>
-            { isProfile ? 
-                <Link 
-                    to="/account/setting"
-                    className="flex justify-center items-center"
-                >
-                    <Tooltip title="Profile setting">
-                        <SettingsIcon 
-                            color="primary" 
-                            className="cursor-pointer" 
-                        />
-                    </Tooltip>
-                </Link>
-                : 
-                "" 
-            }
         </div>
         <Divider />
         <div>

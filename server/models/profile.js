@@ -2,6 +2,7 @@ const moongse = require('mongoose');
 
 const Schema = moongse.Schema;
 
+// create Profile Schema
 const profileSchema = new Schema({
     uid: { type: String, required: true },
     age: { type: Number, required: true },

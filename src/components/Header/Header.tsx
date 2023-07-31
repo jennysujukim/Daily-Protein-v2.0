@@ -8,6 +8,7 @@ import {
   Typography
 } from "@mui/material"
 import { useLogout } from "../../hooks/useLogout"
+import { theme } from "../../theme/theme"
 
 function Header() {
 
@@ -17,16 +18,23 @@ function Header() {
 
   const { logOut, error } = useLogout()
 
+  // MUI modal style
   const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    width: "80%",
+    bgcolor: theme.palette.secondary.light,
     boxShadow: 24,
+    borderRadius: "0.5rem",
     p: 4,
+    [theme.breakpoints.up('md')]: {
+      width: "50%",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+    }
   };
 
   return (
@@ -55,16 +63,18 @@ function Header() {
           aria-describedby="modal-logout-description"
         >
           <Box sx={style}>
-            <Typography 
-              id="modal-logout-title" 
-              variant="h6" 
-              component="h2"
-            >
-              Logout
-            </Typography>
-            <Typography id="modal-logout-description">
-              Are you sure you want to logout?
-            </Typography>
+            <div>
+              <Typography 
+                id="modal-logout-title" 
+                variant="h6" 
+                component="h2"
+              >
+                Logout
+              </Typography>
+              <Typography id="modal-logout-description">
+                Are you sure you want to logout?
+              </Typography>
+            </div>
             <Button 
                 variant="outlined"
                 onClick={logOut}

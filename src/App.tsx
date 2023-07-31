@@ -20,6 +20,8 @@ import Add from './pages/Add/Add'
 
 function App () {
 
+  // check if auth is ready from firebase auth,
+  // check user to display the right page components
   const { user, authIsReady } = useAuthContext()
 
   return (
@@ -40,7 +42,7 @@ function App () {
                 />
                 <Route 
                   path="/account/signup" 
-                  element={!user ? <Signup /> : <Navigate to="/" replace={true} /> }
+                  element={!user ? <Signup /> : <Navigate to="/account/setting" replace={true} /> }
                 />
                 <Route 
                   path="/account/setting" 

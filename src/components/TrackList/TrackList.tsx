@@ -1,14 +1,22 @@
-import { Card, CardContent, Tooltip, Typography } from "@mui/material"
+import { 
+    Card, 
+    CardContent, 
+    Tooltip, 
+    Typography
+} from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close';
 import { TrackerListProps } from "../../models";
 import axios from "axios";
 
+
+// receive lists TrackerData from Tracker.tsx and map through each list,
+// also receive handleDelete function from Tracker.tsx for real-time update
 function TrackList({ lists, handleDelete }: TrackerListProps) {
 
+    // Delete foodlist from database (server) when button clicked
     const handleClick = (dataId: string ) => {
         axios.delete(`http://localhost:${process.env.REACT_APP_PORT}/api/tracker/${dataId}`)
-        .then((response) => {
-            console.log(response.data.message)
+        .then(() => {
             handleDelete(dataId)
         })
         .catch((error) => {
@@ -25,8 +33,10 @@ function TrackList({ lists, handleDelete }: TrackerListProps) {
                 key={index}
             >
                 <CardContent className="relative">
-                    <Typography className="text-xl pb-3 font-semibold">{list.name}</Typography>
-                    <Typography>Protein {list.protein}g</Typography>
+                    <Typography className="text-xl pb-3 font-semibold">
+                        {list.name}
+                    </Typography>
+                    <Typography>Protein {list.protein.toFixed(0)} g</Typography>
                     <Tooltip title="Delete">
                         <CloseIcon 
                             className="absolute right-4 top-4 cursor-pointer" 
