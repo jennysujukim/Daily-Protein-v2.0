@@ -9,7 +9,7 @@ const profileRoutes = require('./routes/profile-routes')
 const trackerRoutes = require('./routes/tracker-routes')
 
 const app = express();
-const PORT = process.env.REACT_APP_PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
 // parse incoming request bodies in JSON format
 app.use(bodyParser.json());
