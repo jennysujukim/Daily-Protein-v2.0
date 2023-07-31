@@ -14,9 +14,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '18'
-        
-    - name: 📂 Change to 'client' directory
-      run: cd client
       
     - name: 🔨 Build Project
       env:
