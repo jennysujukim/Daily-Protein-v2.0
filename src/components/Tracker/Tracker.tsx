@@ -12,11 +12,12 @@ import TrackList from '../TrackList/TrackList'
 import axios from 'axios'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { TrackerData } from '../../models'
-
+import { useProteinIntakeContext } from '../../hooks/useProteinIntakeContext'
  
 function Tracker() {
 
   const { user } = useAuthContext()
+  const { setProteinSum } = useProteinIntakeContext()
 
   const [ data, setData ] = useState<TrackerData[]>([])
   const [ isPending, setIsPending ] = useState<boolean>(false)
@@ -31,10 +32,12 @@ function Tracker() {
         const response = await axios.get(`http://localhost:${process.env.REACT_APP_PORT}/api/tracker/${user?.uid}`)
         const data = await response.data.tracker
 
-        console.log(data)
         setIsPending(false)
         setData(data)
         setError(null)
+
+        const proteinSum = data.map((item: TrackerData) => item.protein).reduce((prev: number, next: number) => prev + next, 0)
+        setProteinSum(proteinSum)
       }
       catch(error) {
         setError(`Error when fetching data : ${error}`)
@@ -44,12 +47,15 @@ function Tracker() {
 
     getData()
   
-  }, [user])
+  }, [user, setProteinSum])
 
   const handleDelete = (deletedDataId: string) => {
     const updatedData = data.filter((item) => item.id !== deletedDataId);
     setData(updatedData)
+    const updatedProteinSum = updatedData.map((item: TrackerData) => item.protein).reduce((prev: number, next: number) => prev + next, 0)
+    setProteinSum(updatedProteinSum)
   }
+
   
   return (
     <div className="col-span-7">

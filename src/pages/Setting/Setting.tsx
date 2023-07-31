@@ -24,13 +24,14 @@ import PageLayout from '../../layout/PageLayout/PageLayout'
 import { useAuthContext } from '../../hooks/useAuthContext';
 import axios from 'axios';
 
-function Setting() {
 
+function Setting() {
+ 
     const { user } = useAuthContext()
     const profileState = useSelector((state:RootState) => state.profile)
     const dispatch = useDispatch();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         axios.post(`http://localhost:${process.env.REACT_APP_PORT}/api/profile`, { 

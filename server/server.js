@@ -31,15 +31,15 @@ app.use('/api/profile', profileRoutes);
 app.use('/api/tracker', trackerRoutes);
 
 
-// // user build folder to serve all static files
-// const buildPath = path.join(__dirname, '..', 'build');
+// user build folder to serve all static files
+const buildPath = path.join(__dirname, '..', 'build');
 
-// app.use(express.static(buildPath));
+app.use(express.static(buildPath));
 
-// // catch-all route to handle client-side routing
-// app.get("*", (req, res) => {
-//     res.sendFile(path.join(buildPath, 'index.html'));
-// })
+// catch-all route to handle client-side routing
+app.get("*", (req, res) => {
+    res.sendFile(path.join(buildPath, 'index.html'));
+})
 
 mongoose
     .connect(`mongodb+srv://${process.env.MONGO_DB_USERNAME}:${encodeURIComponent(process.env.MONGO_DB_PASSWORD)}@cluster0.c0569gh.mongodb.net/?retryWrites=true&w=majority`)
