@@ -38,14 +38,11 @@ function Dashboard() {
 
   useEffect(() => {
     // Fetch profile data from database (server)
-    const getData = async () => {
-      setIsPending(true)
-  
+    const getData = async () => {  
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_PORT}/api/profile/${user?.uid}`)
         const data = await response.data.profile
   
-        setIsPending(false)
         setData(data)
         setError(null)
 
